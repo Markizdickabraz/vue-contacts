@@ -1,41 +1,43 @@
 <template>
     <Form>
-        <my-input v-model="login.email" type="text" placeholder="email" />
-        <my-input v-model="login.password" type="text" placeholder="password" />
-        <my-button @click.prevent='handleLogin'>Login</my-button>
+        <my-input v-model="register.email" @input="updateAuthInputValue" type="text" placeholder="email" />
+        <my-input v-model="register.password" @input="updateAuthInputValue" type="text" placeholder="password" />
+        <my-button @click.prevent="registerUser">Login</my-button>
     </Form>
 </template>
 
 <script>
 import Form from '@/components/Form';
-import axios from 'axios';
+import { mapActions } from 'vuex';
+
 export default {
     components: {
-    Form
+        Form
     },
     data() {
         return {
-            isLogin: false,
-
-            login: {
+            register: {
                 email: '',
                 password: '',
-        }
-    }
+            }
+        };
     },
     methods: {
-      async handleLogin(){
-            try {
-                await axios.post('https://poli-back.onrender.com/api/user/login', this.login);
-                this.isLogin = true;
-        } catch (error) {
-                console.log(error);
-        }
+        ...mapActions({
+            registerUser: 'auth/registerOrLogin',
+            setAuthInputValue: 'auth/setAuthInputValue',
+            setChangePage: 'auth/setChangePage',
+            setRegisterOrLoginValue: 'auth/setRegisterOrLoginValue',
+        }),
+        updateAuthInputValue() {
+            this.setAuthInputValue(this.register);
+        },
+    },
+    mounted() {
+        this.setChangePage('./contacts');
+        this.setRegisterOrLoginValue('/login');
     }
-}
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,9 +1,9 @@
 <template>
-    <Form>
-        <my-input v-model="register.email" @input="updateAuthInputValue" type="text" placeholder="email" />
-        <my-input v-model="register.password" @input="updateAuthInputValue" type="text" placeholder="password" />
-        <my-button @click.prevent='registerUser'>Registration</my-button>
-    </Form>
+        <Form>
+            <my-input v-model="register.email" @input="updateAuthInputValue" type="text" placeholder="email" />
+            <my-input v-model="register.password" @input="updateAuthInputValue" type="text" placeholder="password" />
+            <my-button @click.prevent="registerUser">Registration</my-button>
+        </Form>
 </template>
 
 <script>
@@ -24,13 +24,19 @@ export default {
     },
     methods: {
         ...mapActions({
-            registerUser: 'auth/register',
+            registerUser: 'auth/registerOrLogin',
             setAuthInputValue: 'auth/setAuthInputValue',
+            setChangePage: 'auth/setChangePage',
+            setRegisterOrLoginValue: 'auth/setRegisterOrLoginValue',
         }),
         updateAuthInputValue() {
             this.setAuthInputValue(this.register);
         },
     },
+    mounted() {
+        this.setChangePage('./login');
+        this.setRegisterOrLoginValue('/register');
+    }
 }
 </script>
 
