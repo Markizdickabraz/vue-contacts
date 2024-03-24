@@ -10,6 +10,7 @@ export const AuthModule = {
         },
         changePage: '',
         registerOrLoginValue: '',
+        authToken: '',
   }),
   mutations: {
     setIsLogin(state, value) {
@@ -24,10 +25,13 @@ export const AuthModule = {
     setRegisterOrLoginValue(state, value) { 
         state.registerOrLoginValue = value;
       },
+      setAuthToken(state, value) {
+          state.authToken = value;
+      }
   },
   actions: {
-      setAuthInputValue({ commit }, value) {
-        commit('setInputValue', value);
+      setAuthInputValue({ commit}, value) {
+          commit('setInputValue', value);
       },
 
       setChangePage({ commit }, value) {
@@ -36,16 +40,26 @@ export const AuthModule = {
       setRegisterOrLoginValue({ commit }, value) { 
           commit('setRegisterOrLoginValue', value);
       },
+      setAuthToken({ commit }, value) { 
+          commit('setAuthToken', value);
+      },
       async registerOrLogin({ state, commit }) {
-          console.log(state, 'state')
         try {
-        await axios.post(`https://poli-back.onrender.com/api/user/${state.registerOrLoginValue}`, state.authInputValue);
-          commit('setIsLogin', true);
-          router.push(state.changePage);
+            const response = await axios.post(`https://poli-back.onrender.com/api/user/${state.registerOrLoginValue}`, state.authInputValue);
+            const authToken = response.data.token;
+            commit('setIsLogin', true);
+            commit('setAuthToken', authToken);
+            localStorage.setItem('authToken', authToken); 
+            router.push(state.changePage);
       } catch (error) {
-        console.error('Error registering user:', error);
+        console.error(error.message);
       }
     },
-  },
+    },
+    getters: {
+        isAuthenticated(state) {
+            return !!state.authToken; // Перевірка, чи користувач має авторизацію
+        }
+    },
   namespaced: true
 }
