@@ -1,44 +1,41 @@
 <template>
     <div>
+        <my-button @click='showDialog'>
+            Add contact
+        </my-button>
         <ContactsList />
-        <Form>
-            <my-input v-model="inputAddContact.name" @input="updateInputContactValue" type="text" placeholder="name" />
-            <my-input v-model="inputAddContact.email" @input="updateInputContactValue" type="text" placeholder="email" />
-            <my-input v-model="inputAddContact.phone" @input="updateInputContactValue" type="text" placeholder="phone" />
-            <my-button @click.prevent="addContact">Add contact</my-button>
-        </Form>
+
+        <my-dialog v-model:show="dialogVisible">
+            <AddContact :dialogVisible="dialogVisible" @contactAdded="handleContactAdded"></AddContact>
+        </my-dialog>
     </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import ContactsList from '@/components/ContactsList';
-import Form from '@/components/Form';
-
+import AddContact from '@/components/AddContact';
 
 export default {
     components: {
         ContactsList,
-        Form
+        AddContact,
     },
     data() {
         return {
-            inputAddContact: {
-                name: '',
-                email: '',
-                phone: '',
-            }
-        };
+            dialogVisible: false,
+        }
     },
     methods: {
         ...mapActions('contacts', {
             getContacts: 'getContacts',
-            setInputAddContactValue: 'setInputAddContact',
-            addContact: 'addContact',
         }),
-        updateInputContactValue() {
-            this.setInputAddContactValue(this.inputAddContact);
+        showDialog() {
+            this.dialogVisible = true;
         },
+        handleContactAdded() {
+            this.dialogVisible = false;
+        }
     },
     mounted() {
         this.getContacts();

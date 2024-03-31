@@ -1,12 +1,15 @@
 <template>
-    <div class="contact">
-            <div><strong>Name: </strong>{{contact.name }}</div>
-            <div><strong>Email: </strong>{{contact.email }}</div>
-            <div><strong>Phone: </strong>{{contact.phone }}</div>
-    </div>
+        <div class="contact" :id="contact._id">
+            <div><strong>Name: </strong>{{ contact.name }}</div>
+            <div><strong>Email: </strong>{{ contact.email }}</div>
+            <div><strong>Phone: </strong>{{ contact.phone }}</div>
+            <my-button @click="deleteContact(contact._id)">delete</my-button>
+        </div>
 </template>
 
 <script>
+
+import { mapActions } from 'vuex';
 
 export default {
     props: {
@@ -14,6 +17,9 @@ export default {
             type: Object,
             required: true,
         }
+    },
+    methods: {
+        ...mapActions('contacts', ['deleteContact'])
     }
 }
 </script>

@@ -3,6 +3,8 @@ import Home from '@/pages/Home';
 import RegForm from '@/components/RegForm';
 import LogForm from '@/components/LogForm';
 import Contacts from '@/pages/Contacts';
+import store from '@/store';
+
 
 const routes = [
     {
@@ -19,13 +21,27 @@ const routes = [
     },
     {
     path: '/contacts',
-    component: Contacts,
+        component: Contacts,
+        meta: {requiresAuth: true}
     },
 ]
 
 const router = createRouter({
     routes,
     history: createWebHistory(process.env.BASE_URL)
-})
+});
+
+// router.beforeEach((to, from, next) => {
+//     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+//     console.log(requiresAuth);
+//     const isLogin = store.state.auth.isLogin;
+//     console.log(store.state.auth.isLogin)
+
+//   if (requiresAuth && !isLogin) {
+//     next('/login');
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

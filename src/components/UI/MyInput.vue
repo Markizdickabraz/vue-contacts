@@ -24,5 +24,6 @@ export default {
 .input {
         border: 1px solid teal;
         padding: 10px 15px;
-        width: 60%;
-    }</style>
+        width: 90%;
+    }
+</style>

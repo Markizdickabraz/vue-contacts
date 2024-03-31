@@ -1,6 +1,6 @@
 <template>
     <Form>
-        <my-input v-model="login.email" @input="updateAuthInputValue" type="text" placeholder="email" />
+        <my-input v-model="login.email" @input="updateAuthInputValue" type="email" placeholder="email" />
         <my-input v-model="login.password" @input="updateAuthInputValue" type="text" placeholder="password" />
         <my-button @click.prevent="loginUser">Login</my-button>
     </Form>
